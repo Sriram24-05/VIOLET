@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>V.I.O.L.E.T. | AI Assistant</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at center, #211044, #090719 65%, #05040d);
+    color: #eee7ff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 92%;
+    max-width: 700px;
+    text-align: center;
+    padding: 25px;
+}
+
+h1 {
+    color: #bd8cff;
+    letter-spacing: 9px;
+    text-shadow: 0 0 18px #914bff;
+    font-size: 34px;
+}
+
+.subtitle {
+    color: #a98bdb;
+    letter-spacing: 2px;
+    font-size: 12px;
+}
+
+.status {
+    color: #c6a5ff;
+    margin: 25px;
+    letter-spacing: 3px;
+    font-size: 13px;
+}
+
+.circle {
+    width: 170px;
+    height: 170px;
+    border: 3px solid #a65cff;
+    border-radius: 50%;
+    margin: 30px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 55px;
+    color: #d7baff;
+    box-shadow: 0 0 20px #853cff,
+                inset 0 0 25px #6422a8;
+    animation: pulse 2.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 15px #853cff,
+                    inset 0 0 15px #6422a8;
+    }
+    50% {
+        box-shadow: 0 0 40px #bd75ff,
+                    inset 0 0 30px #853cff;
+    }
+}
+
+#chat {
+    height: 240px;
+    overflow-y: auto;
+    text-align: left;
+    background: rgba(32, 19, 58, 0.85);
+    border: 1px solid #7041a8;
+    border-radius: 14px;
+    padding: 15px;
+    margin: 25px 0;
+    box-shadow: 0 0 15px rgba(132, 67, 211, 0.15);
+}
+
+#chat p {
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+#chat b {
+    color: #c69aff;
+}
+
+input {
+    width: 68%;
+    padding: 14px;
+    border: 1px solid #a65cff;
+    border-radius: 9px;
+    background: #17102b;
+    color: white;
+    outline: none;
+}
+
+input:focus {
+    box-shadow: 0 0 12px #853cff;
+}
+
+button {
+    padding: 14px;
+    margin: 5px;
+    background: #7136b5;
+    color: white;
+    border: 1px solid #a65cff;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #9a50e8;
+    box-shadow: 0 0 12px #a65cff;
+}
+
+.footer {
+    color: #8066a8;
+    font-size: 11px;
+    margin-top: 25px;
+    letter-spacing: 2px;
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 27px;
+        letter-spacing: 5px;
+    }
+
+    input {
+        width: 65%;
+    }
+
+    .circle {
+        width: 145px;
+        height: 145px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>V.I.O.L.E.T.</h1>
+
+    <p class="subtitle">
+        VIRTUAL INTEGRATED OPERATIONS &amp;
+        LOGICAL EXECUTION TERMINAL
+    </p>
+
+    <p class="status" id="status">
+        SYSTEM ONLINE
+    </p>
+
+    <div class="circle">◉</div>
+
+    <div id="chat">
+        <p>
+            <b>V.I.O.L.E.T.:</b>
+            Greetings! I am V.I.O.L.E.T.
+            All systems are online.
+        </p>
+    </div>
+
+    <input
+        id="message"
+        type="text"
+        placeholder="Talk to V.I.O.L.E.T..."
+    >
+
+    <button onclick="sendMessage()">Send</button>
+
+    <button onclick="startListening()">🎤</button>
+
+    <p class="footer">
+        PERSONAL AI SYSTEM | VERSION 1.0
+    </p>
+
+</div>
+
+<script>
+
+const chat = document.getElementById("chat");
+const input = document.getElementById("message");
+const statusText = document.getElementById("status");
+
+function addMessage(sender, text) {
+    const p = document.createElement("p");
+    const b = document.createElement("b");
+
+    b.textContent = sender + ": ";
+    p.appendChild(b);
+    p.appendChild(document.createTextNode(text));
+
+    chat.appendChild(p);
+    chat.scrollTop = chat.scrollHeight;
+}
+function showAvailableVoices() {
+
+    const voices = window.speechSynthesis.getVoices();
+
+    let voiceList = "AVAILABLE VIOLET VOICES:\n\n";
+
+    voices.forEach((voice, index) => {
+        voiceList += `${index + 1}. ${voice.name} (${voice.lang})\n`;
+    });
+
+    alert(voiceList);
+}
+
+window.speechSynthesis.onvoiceschanged = showAvailableVoices;
+
+setTimeout(showAvailableVoices, 1000);
+function getFemaleVoice() {
+
+    const voices = window.speechSynthesis.getVoices();
+
+    // Add the exact voice name you found in Console
+    const preferredVoices = [
+        "Microsoft Zira Desktop",
+        "Microsoft Aria",
+        "Microsoft Jenny",
+        "Google UK English Female"
+    ];
+
+    return voices.find(voice =>
+        preferredVoices.some(name =>
+            voice.name.toLowerCase().includes(name.toLowerCase())
+        )
+    ) || null;
+}
+
+async function sendMessage() {
+
+    const message = input.value.trim();
+
+    if (!message) return;
+
+    addMessage("You", message);
+    input.value = "";
+
+    statusText.textContent = "PROCESSING...";
+
+    try {
+        const response = await fetch("/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message })
+        });
+
+        if (!response.ok) {
+            throw new Error("Server error");
+        }
+
+        const data = await response.json();
+
+        addMessage("V.I.O.L.E.T.", data.reply);
+
+        const speech = new SpeechSynthesisUtterance(data.reply);
+        speech.lang = "en-IN";
+
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(speech);
+
+        statusText.textContent = "SYSTEM ONLINE";
+
+    } catch (error) {
+        addMessage(
+            "V.I.O.L.E.T.",
+            "Connection error. Please check the server."
+        );
+
+        statusText.textContent = "CONNECTION ERROR";
+    }
+}
+
+input.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+});
+
+function startListening() {
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+        alert("Speech recognition is not supported in this browser.");
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = "en-IN";
+    recognition.interimResults = false;
+
+    recognition.onstart = function() {
+        statusText.textContent = "LISTENING...";
+    };
+
+    recognition.onresult = function(event) {
+        input.value = event.results[0][0].transcript;
+        sendMessage();
+    };
+
+    recognition.onerror = function() {
+        statusText.textContent = "VOICE ERROR";
+    };
+
+    recognition.onend = function() {
+        if (statusText.textContent === "LISTENING...") {
+            statusText.textContent = "SYSTEM ONLINE";
+        }
+    };
+
+    recognition.start();
+}
+
+</script>
+
+</body>
+</html>
